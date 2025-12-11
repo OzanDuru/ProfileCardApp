@@ -4,6 +4,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
+import ProfileScreen from './screens/ProfileScreen';
 
 export default function App() {
   // 2) useFonts hook'u ile custom fontlarımızı yüklemeye çalışıyoruz
@@ -23,11 +24,7 @@ export default function App() {
 
   // 4) Fontlar yüklendiyse asıl UI'mizi return ediyoruz.
   return (
-    <View style={styles.container}>
-      {/* Burada Text bileşenine styles.text stilini veriyoruz.
-          styles.text içindeki fontFamily, yukarıda useFonts'a verdiğimiz "MontserratBold" key'i ile aynı olmalı. */}
-      <Text style={styles.text}>Fonts Loaded!</Text>
-    </View>
+    <ProfileScreen />
   );
 }
 
