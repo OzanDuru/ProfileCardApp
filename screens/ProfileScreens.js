@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Pressable, useWindowDimensions } from 'react-native';
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import { COLORS, SPACING, RADII, FONTS } from '../theme';
@@ -7,13 +7,16 @@ export default function ProfileScreen() {
   const [theme, setTheme] = useState('light');
   const currentTheme = COLORS[theme];
 
+  // 📱 Responsive logic
+  const { width } = useWindowDimensions();
+  const isLargeScreen = width > 500; // tablet vs telefon
+
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
   };
 
   return (
     <View style={[styles.container, { backgroundColor: currentTheme.bg }]}>
-      
       {/* Theme Toggle Button */}
       <Pressable onPress={toggleTheme} style={styles.themeToggle}>
         <Ionicons
@@ -24,15 +27,24 @@ export default function ProfileScreen() {
       </Pressable>
 
       {/* Profile Card */}
-      <View style={[styles.card, { backgroundColor: currentTheme.card }]}>
+      <View
+        style={[
+          styles.card,
+          {
+            backgroundColor: currentTheme.card,
+            padding: isLargeScreen ? SPACING.xl : SPACING.lg,
+            width: isLargeScreen ? '60%' : '85%',
+          },
+        ]}
+      >
         <Ionicons
           name="person-circle-outline"
-          size={80}
+          size={isLargeScreen ? 100 : 80}
           color={currentTheme.text}
         />
 
         <Text style={[styles.name, { color: currentTheme.text }]}>
-          Zerrin Duru
+          John Doe
         </Text>
 
         <Text style={[styles.role, { color: currentTheme.text }]}>
@@ -40,19 +52,17 @@ export default function ProfileScreen() {
         </Text>
 
         {/* Like Button */}
-            <Pressable
-            onPress={() => console.log('Profile Liked!')}
-            style={({ pressed }) => [
-                styles.likeButton,
-                { backgroundColor: pressed ? '#e63946' : '#ff6b6b' }
-            ]}
-            >
-            <Ionicons name="heart" size={24} color="#fff" />
-            <Text style={styles.likeText}>Like</Text>
-            </Pressable>
-
+        <Pressable
+          onPress={() => console.log('Profile Liked!')}
+          style={({ pressed }) => [
+            styles.likeButton,
+            { backgroundColor: pressed ? '#e63946' : '#ff6b6b' },
+          ]}
+        >
+          <Ionicons name="heart" size={24} color="#fff" />
+          <Text style={styles.likeText}>Like</Text>
+        </Pressable>
       </View>
-
     </View>
   );
 }
@@ -71,21 +81,21 @@ const styles = StyleSheet.create({
     padding: SPACING.sm,
   },
 
+  // ✅ padding ve width burada yok artık, yukarıda dinamik geliyor
   card: {
-    width: '85%',
     borderRadius: RADII.md,
     alignItems: 'center',
-    padding: SPACING.lg,
-
+  
     // iOS shadow
     shadowColor: '#000',
     shadowOpacity: 0.15,
     shadowRadius: 8,
     shadowOffset: { width: 0, height: 4 },
-
+  
     // Android shadow
     elevation: 6,
   },
+  
 
   name: {
     fontFamily: FONTS.bold,
@@ -99,6 +109,7 @@ const styles = StyleSheet.create({
     marginTop: SPACING.sm,
     opacity: 0.7,
   },
+
   likeButton: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -107,12 +118,11 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginTop: SPACING.md,
   },
-  
+
   likeText: {
     color: '#fff',
     fontFamily: FONTS.bold,
     fontSize: 16,
     marginLeft: SPACING.sm,
   },
-  
 });
