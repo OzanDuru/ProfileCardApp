@@ -4,7 +4,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { useFonts } from 'expo-font';
-import ProfileScreen from './screens/ProfileScreen';
+import ProfileScreen from './screens/ProfileScreens';
 
 export default function App() {
   // 2) useFonts hook'u ile custom fontlarımızı yüklemeye çalışıyoruz
