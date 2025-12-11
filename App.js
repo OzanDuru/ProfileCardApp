@@ -1,20 +1,51 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+// App.js
+
+// 1) Expo'nun font yükleme hook'unu import ediyoruz
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { useFonts } from 'expo-font';
 
 export default function App() {
+  // 2) useFonts hook'u ile custom fontlarımızı yüklemeye çalışıyoruz
+  //    useFonts bize [fontsLoaded] diye bir boolean döndürüyor.
+  const [fontsLoaded] = useFonts({
+    // Sol taraftaki key'ler (Montserrat, MontserratBold) bizim vereceğimiz isimler.
+    // Sağ taraftaki require içindeki path ise proje içindeki gerçek font dosyasının yolu.
+    Montserrat: require('./assets/fonts/Montserrat-Regular.ttf'),
+    MontserratBold: require('./assets/fonts/Montserrat-Bold.ttf'),
+  });
+
+  // 3) Eğer fontlar henüz yüklenmediyse, hiçbir şey render etmiyoruz (null dönüyoruz).
+  //    İstersen burada bir <ActivityIndicator /> ya da "Loading..." text de gösterebilirsin.
+  if (!fontsLoaded) {
+    return null;
+  }
+
+  // 4) Fontlar yüklendiyse asıl UI'mizi return ediyoruz.
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      {/* Burada Text bileşenine styles.text stilini veriyoruz.
+          styles.text içindeki fontFamily, yukarıda useFonts'a verdiğimiz "MontserratBold" key'i ile aynı olmalı. */}
+      <Text style={styles.text}>Fonts Loaded!</Text>
     </View>
   );
 }
 
+// 5) StyleSheet ile stil tanımlıyoruz
 const styles = StyleSheet.create({
   container: {
+    // Tüm ekranı kapla
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
+    // Dikeyde ortala
     justifyContent: 'center',
+    // Yatayda ortala
+    alignItems: 'center',
+    // Arka plan rengi istersen ekleyebilirsin:
+    // backgroundColor: '#fff',
+  },
+  text: {
+    // Buradaki isim, useFonts içindeki key ile birebir aynı olmalı
+    fontFamily: 'MontserratBold',
+    fontSize: 24,
   },
 });
